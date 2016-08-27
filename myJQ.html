@@ -22,6 +22,8 @@
 		<p class="bb"></p>
 	</div>
 	<div class="aa" id="aa"></div>
+	 <!-- // <script src="jQuery.js"></script> -->
+	    <!-- // <script src="jquery-1.9.1.min.js"></script> -->
 	<script src="myJQ.js"></script>
 	<script>
 	$(function(){
@@ -49,7 +51,7 @@
 		});
 
 		$('#aa').css("background-color", "blue");
-		
+
 
 		$(".aa").on("click", "#bb", function(){
 			alert('delagate by id');
@@ -62,6 +64,14 @@
 		$(".aa").on("click", ".cc", function(){
 			alert('delagate by className');
 		});
+
+		$(".aa").on("click", function(){
+			alert('no delagate');
+		});
+
+		$(".cc").offset({left: 300, top:100});
+		// console.log(getStyle($(".aa").elements[0], "position"));
+		console.log( $(".cc").offset());
 
 
 	});

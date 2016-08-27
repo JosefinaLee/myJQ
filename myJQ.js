@@ -18,6 +18,7 @@ function JQuery(arg){
 					break;
 				case '.': //class
 					this.elements = document.getElementsByClassName(arg.substring(1));
+						// return this.elements;
 					break;
 				default://tag
 					this.elements = document.getElementsByTagName(arg);
@@ -64,7 +65,6 @@ function setCss(elem, attr, value){
 JQuery.prototype.on = function(type, selector, fn){
 	for(var i=0; i<this.elements.length; i++){
 		if(typeof selector == "function"){
-			console.log("fn");
 			fn = selector;
 			this.elements[i].addEventListener(type, fn, false);
 		}else if(typeof selector == "string"){
@@ -93,7 +93,9 @@ JQuery.prototype.on = function(type, selector, fn){
 			}, false);
 		}
 	}
+	return this;
 };
+
 JQuery.prototype.css = function(propName, value){
 	if(value){
 		for(var i=0; i<this.elements.length; i++){
@@ -112,15 +114,39 @@ JQuery.prototype.css = function(propName, value){
 			}
 		}
 	}
+	return this;
 
 };
 
-JQuery.prototype.click = function(fn){
-	for(var i=0; i<this.elements.length; i++){
-		this.elements[i].addEventListener('click', fn, false);
+JQuery.prototype.offset = function(coordinates){
+	if(coordinates){
+		for(var i=0; i<this.elements.length; i++){
+			var elem = this.elements[i];
+			if(getStyle(elem, "position") == "static"){
+				elem.style.position = "relative";
+
+			}
+			
+			setCss(elem, "left", coordinates.left);
+			setCss(elem, "top", coordinates.top);
+		}
+	}else{
+		var elem = this.elements[0];
+		var iLeft = iTop = 0;
+		do{
+			iTop += elem.offsetTop;
+			iLeft += elem.offsetLeft;
+			elem = elem.offsetParent;
+		}while(elem);
+		return {
+			left: iLeft,
+			top: iTop
+		}
+		
 	}
 	return this;
 };
+
 
 function $(arg){
 	return new JQuery(arg);
